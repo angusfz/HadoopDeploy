@@ -1,0 +1,36 @@
+#
+yum -y install openssh-clients.x86_64
+
+#
+userdel -r hdfs
+userdel -r yarn
+userdel -r hbase
+groupdel hadoop
+
+#
+groupadd hadoop
+useradd hdfs -g hadoop
+useradd yarn -g hadoop
+useradd hbase -g hadoop
+echo -e "1qaz2wsx" | (passwd --stdin hdfs)
+echo -e "1qaz2wsx" | (passwd --stdin yarn)
+echo -e "1qaz2wsx" | (passwd --stdin hbase)
+
+#
+su - hdfs
+ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
+exit
+
+su - yarn
+ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
+exit
+
+su - hbase
+ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
+exit
